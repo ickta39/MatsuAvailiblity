@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Ichikawa Technical High School</title>
+    </head>
+    <body>
+        <h1>市川工業高校 E1A - 空席状況照会</h2><br>
+        <form id="data">
+            <h2>ポーカー：</h2>
+            <select name="porker">
+                <option value="">変更なし</option>
+                <option>空席あり</option>
+                <option>空席わずか</option>
+                <option>満席</option>
+                <option>入場中止中</option>
+                <option>並んだらすぐ</option>
+            </select>
+            <h2>ルーレット：</h2>
+            <select name="roulette">
+                <option value="">変更なし</option>
+                <option>空席あり</option>
+                <option>空席わずか</option>
+                <option>満席</option>
+                <option>入場中止中</option>
+                <option>並んだらすぐ</option>
+            </select>
+            <h2>ブラックジャック：</h2>
+            <select name="blackjack">
+                <option value="">変更なし</option>
+                <option>空席あり</option>
+                <option>空席わずか</option>
+                <option>満席</option>
+                <option>入場中止中</option>
+                <option>並んだらすぐ</option>
+            </select>
+            <h2>チンチロ：</h2>
+            <select name="chinchiro">
+                <option value="">変更なし</option>
+                <option>空席あり</option>
+                <option>空席わずか</option>
+                <option>満席</option>
+                <option>入場中止中</option>
+                <option>並んだらすぐ</option>
+            </select>
+            <input type="button" value="更新">
+        </form>
+        <!--script>
+            var form = document.forms[0];
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = () => {
+                if (req.status == 200 && req.readyState == 4) {
+                    var resp = JSON.parse(req.responseText)
+                    form.elements["overview"].value = resp.overview
+                    form.elements["porker"].value = resp.porker,
+                    form.elements["resp.roulette"].value = resp.roulette,
+                    form.elements["blackjack"].value = resp.blackjack,
+                    form.elements["chinchiro"].value = resp.chinchiro
+                }
+            }
+            xhr.open("GET", "status.json");
+            xhr.send(null)
+        </script-->
+        <script>
+            var form = document.forms[0];
+            var req = new XMLHttpRequest()
+
+            document.querySelector("input").addEventListener("click", () => {
+                console.log(form.elements)
+                    let json = {
+                        "porker": form.elements["porker"].value,
+                        "roulette": form.elements["roulette"].value,
+                        "blackjack": form.elements["blackjack"].value,
+                        "chinchiro": form.elements["chinchiro"].value,
+                    }
+
+                    req.open("POST", "change.php", true)
+                    req.setRequestHeader("Content-Type", "application/json;")
+                    req.send(JSON.stringify(json))
+            })
+        </script>
+    </body>
+</html>

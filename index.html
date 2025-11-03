@@ -1,0 +1,208 @@
+
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>裏カジノ松 - 空席状況</title>
+    <!-- Tailwind CSS CDNを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&display=swap" rel="stylesheet">
+    <style>
+        /* フォント設定 (Interを使用) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', "BIZ UDPGothic", sans-serif;
+            background-color: #0d1117; /* ダークカジノ背景 */
+        }
+        /* ネオン効果風のテキストシャドウ */
+        .neon-text {
+            text-shadow: 0 0 5px #ffeb3b, 0 0 10px #fbc02d, 0 0 15px #f57f17;
+        }
+        /* 豪華なゴールドのボーダーとシャドウ */
+        .casino-card {
+            background-color: #1f2937; /* Dark Slate */
+            border: 3px solid #d97706; /* Gold/Orange border */
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); /* Gold Glow */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .casino-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6);
+        }
+        /* 空席表示エリアのフォントを太く、大きく */
+        .status-display {
+            font-size: 2.5rem; /* 40px */
+            line-height: 1;
+            font-weight: 700;
+        }
+        /* 16:9のアスペクト比を強制する（Tailwindのaspectプラグイン非依存で実装） */
+        .aspect-16-9 {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 9 / 16 * 100% */
+        }
+        .aspect-16-9 > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 flex flex-col items-center">
+
+    <!-- ヘッダー (全幅) -->
+    <header class="text-center mb-8 pt-4 w-full max-w-7xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-yellow-400 neon-text tracking-widest mb-1">
+            裏カジノ松 - フィーバー２倍 -
+        </h1>
+        <p class="text-xl sm:text-2xl text-gray-200">
+            空席照会システム
+        </p>
+    </header>
+
+    <!-- メインコンテンツ (レスポンシブ 2カラム) -->
+    <!-- lg:flexで広い画面で左右に並べ、space-x-8で間隔を空ける -->
+    <main class="w-full max-w-7xl mx-auto lg:flex lg:space-x-8">
+
+        <!-- 左パネル: 空席照会エリア (lg:w-1/2) -->
+        <div class="w-full lg:w-1/2 mb-8 lg:mb-0">
+            
+            <!-- 更新間隔表示エリア (interval) -->
+            <div class="mb-8 p-3 bg-gray-800 rounded-lg shadow-inner">
+                <p class="text-xs text-gray-400 font-medium text-center uppercase mb-1">次回更新まで</p>
+                <div class="text-center text-red-500 text-3xl font-bold tracking-wider">
+                    <span id="interval">-</span>秒
+                    <!-- 外部JSによって '10秒' や '読み込み中...' などが挿入されます -->
+                </div>
+            </div>
+
+            <!-- 全体の空席状態 (overview) -->
+            <div class="casino-card p-6 rounded-xl mb-8 text-center">
+                <h2 class="text-2xl font-semibold mb-3 text-gray-200">
+                    <i class="fas fa-chart-line mr-2"></i> 全体の空席状況
+                </h2>
+                <div id="overview" class="status-display text-white">
+                    ... データを待機中 ...
+                    <!-- 外部JSによって '満席' や '空席あり' が挿入されます -->
+                </div>
+                <p class="text-sm text-gray-400 mt-2">混雑状況の目安です</p>
+            </div>
+
+            <!-- 個別ゲームの空席状態 (グリッドレイアウト) -->
+            <h3 class="text-xl font-bold text-gray-100 mb-4 border-b border-gray-700 pb-2">
+                ゲーム別詳細
+            </h3>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- ポーカー (porker) -->
+                <div class="casino-card p-4 rounded-xl text-center">
+                    <h4 class="text-lg font-medium text-gray-300 mb-2">ポーカー</h4>
+                    <div id="porker" class="text-2xl font-bold text-white">-</div>
+                </div>
+
+                <!-- ルーレット (roulette) -->
+                <div class="casino-card p-4 rounded-xl text-center">
+                    <h4 class="text-lg font-medium text-gray-300 mb-2">ルーレット</h4>
+                    <div id="roulette" class="text-2xl font-bold text-white">-</div>
+                </div>
+
+                <!-- ブラックジャック (blackjack) -->
+                <div class="casino-card p-4 rounded-xl text-center">
+                    <h4 class="text-lg font-medium text-gray-300 mb-2">ブラックジャック</h4>
+                    <div id="blackjack" class="text-2xl font-bold text-white">-</div>
+                </div>
+
+                <!-- チンチロ (chinchiro) -->
+                <div class="casino-card p-4 rounded-xl text-center">
+                    <h4 class="text-lg font-medium text-gray-300 mb-2">チンチロ</h4>
+                    <div id="chinchiro" class="text-2xl font-bold text-white">-</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右パネル: 16:9 画像エリア (lg:w-1/2) -->
+        <div class="w-full lg:w-1/2">
+            <div class="casino-card p-4 rounded-xl text-center">
+                <h3 class="text-xl font-bold text-gray-100 mb-4">裏カジノ松 - イベント紹介</h3>
+                <div class="aspect-16-9 bg-gray-700 rounded-lg overflow-hidden">
+                    <!--
+                        ここに16:9の画像や動画、広告などを挿入できます。
+                        例: <img src="your-event-image.jpg" alt="イベント告知" class="w-full h-full object-cover">
+                        または、背景色を変更するなどして、利用方法を案内できます。
+                    -->
+                    <div class="flex items-center justify-center text-gray-400 p-4">
+                        <img id="camera" src="/image.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- フッター -->
+    <footer class="mt-10 text-center text-gray-500 text-sm p-4 w-full max-w-7xl mx-auto">
+        &copy; 文化祭  裏カジノ松. 無断転載を禁ずる。
+    </footer>
+        <script>
+            function stateToColoredStateText(key, state) {
+                var element = document.getElementById(key);
+                element.innerHTML = state;
+                switch (state) {
+                    case "満席":
+                    case "入場中止中": {
+                        element.classList.remove("text-yellow-400", "text-green-400")
+                        element.classList.add("text-red-400")
+                        break;
+                    }
+                    case "空席わずか":
+                    case "並んだらすぐ": {
+                        element.classList.remove("text-red-400", "text-green-400")
+                        element.classList.add("text-yellow-400")
+                        break;
+                    }
+                    case "空席あり": {
+                        element.classList.remove("text-red-400", "text-yellow-400")
+                        element.classList.add("text-green-400")
+                        break;
+                    }
+                }
+            }
+            var req = new XMLHttpRequest()
+            req.onreadystatechange = () => {
+                if (req.readyState == 4 && req.status == 200) {
+                    var resp = JSON.parse(req.responseText)
+                    stateToColoredStateText("overview", resp.overview)
+                    stateToColoredStateText("porker", resp.porker)
+                    stateToColoredStateText("roulette", resp.roulette)
+                    stateToColoredStateText("blackjack", resp.blackjack)
+                    stateToColoredStateText("chinchiro", resp.chinchiro)
+                }
+            }
+            var timer = 5;
+            setInterval(() => {
+                if (timer === 0) {
+                    get()
+                    timer = 5
+                }
+                document.getElementById("interval").innerHTML = timer;
+                document.getElementById("camera").src = "/image.jpg?" + (new Date().getTime())
+                timer--;
+            }, 1000)
+
+            function get() {
+                req.open("GET", "/status.json?"+new Date().getTime())
+                req.send(null)
+            }
+
+            window.onload = () => {
+                get()
+                document.getElementById("camera").src = "/image.jpg?" + (new Date().getTime())
+            }
+        </script>
+</body>
+</html>
